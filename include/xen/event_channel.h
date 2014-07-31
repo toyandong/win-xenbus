@@ -71,10 +71,27 @@
 #define EVTCHNOP_bind_vcpu        8
 #define EVTCHNOP_unmask           9
 #define EVTCHNOP_reset           10
+#define EVTCHNOP_bind_vector     14
 /* ` } */
+
 
 typedef uint32_t evtchn_port_t;
 DEFINE_XEN_GUEST_HANDLE(evtchn_port_t);
+
+
+/*
+ * EVTCHNOP_bind_vector: bind a particular evtchn to a particular vector
+ * NOTES:
+ */
+struct evtchn_bind_vector {
+    /* IN parameters */
+    domid_t domid;
+	evtchn_port_t port;
+	int vector;
+	/*u16 vcpu_id;*/
+};
+typedef struct evtchn_bind_vector evtchn_bind_vector_t;
+
 
 /*
  * EVTCHNOP_alloc_unbound: Allocate a port in domain <dom> and mark as

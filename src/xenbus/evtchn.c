@@ -198,6 +198,7 @@ fail1:
 
 static FORCEINLINE NTSTATUS
 __EvtchnOpenInterDomain(
+	IN  PXENBUS_EVTCHN_CONTEXT		Context,
     IN  PXENBUS_EVTCHN_DESCRIPTOR   Descriptor,
     IN  va_list                     Arguments
     )
@@ -211,7 +212,8 @@ __EvtchnOpenInterDomain(
     RemoteDomain = va_arg(Arguments, USHORT);
     RemotePort = va_arg(Arguments, ULONG);
     Mask = va_arg(Arguments, BOOLEAN);
-
+	// bind_vector
+	EventChannelBindVector( RemoteDomain, RemotePort, Context->Interrupt->Raw.u.Interrupt.Vector);
     status = EventChannelBindInterDomain(RemoteDomain, RemotePort, &LocalPort);
     if (!NT_SUCCESS(status))
         goto fail1;
@@ -308,7 +310,7 @@ EvtchnOpen(
         break;
 
     case EVTCHN_INTER_DOMAIN:
-        status = __EvtchnOpenInterDomain(Descriptor, Arguments);
+        status = __EvtchnOpenInterDomain(Context, Descriptor, Arguments);
         break;
 
     case EVTCHN_VIRQ:

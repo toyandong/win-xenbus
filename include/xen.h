@@ -144,6 +144,15 @@ EventChannelBindInterDomain(
 __checkReturn
 XEN_API
 NTSTATUS
+EventChannelBindVector(
+    IN  domid_t                     RemoteDomain,
+    IN  evtchn_port_t               Port,
+	IN  int               Vector
+    );
+
+__checkReturn
+XEN_API
+NTSTATUS
 EventChannelBindVirq(
     IN  uint32_t            Virq,
     OUT evtchn_port_t       *LocalPort
