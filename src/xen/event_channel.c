@@ -110,39 +110,6 @@ fail1:
 __checkReturn
 XEN_API
 NTSTATUS
-EventChannelBindVector(
-    IN  domid_t                     RemoteDomain,
-    IN  evtchn_port_t               Port,
-	IN  int               Vector
-    )
-{
-    struct evtchn_bind_vector  op;
-    LONG_PTR                        rc;
-    NTSTATUS                        status;
-
-	op.domid = RemoteDomain;
-	op.port = Port;
-	op.vector = Vector;
-
-    rc = EventChannelOp(EVTCHNOP_bind_vector, &op);
-
-    if (rc < 0) {
-        ERRNO_TO_STATUS(-rc, status);
-        goto fail1;
-    }
-
-    
-    return STATUS_SUCCESS;
-
-fail1:
-    Error("fail1 (%08x)\n", status);
-
-    return status;
-}
-
-__checkReturn
-XEN_API
-NTSTATUS
 EventChannelBindInterDomain(
     IN  domid_t                     RemoteDomain,
     IN  evtchn_port_t               RemotePort,
