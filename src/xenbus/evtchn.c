@@ -212,8 +212,6 @@ __EvtchnOpenInterDomain(
     RemoteDomain = va_arg(Arguments, USHORT);
     RemotePort = va_arg(Arguments, ULONG);
     Mask = va_arg(Arguments, BOOLEAN);
-	// bind_vector
-	EventChannelBindVector( RemoteDomain, RemotePort, Context->Interrupt->Raw.u.Interrupt.Vector);
     status = EventChannelBindInterDomain(RemoteDomain, RemotePort, &LocalPort);
     if (!NT_SUCCESS(status))
         goto fail1;
@@ -583,6 +581,17 @@ EvtchnRelease(
 {
     ASSERT(Context->References != 0);
     InterlockedDecrement(&Context->References);
+}
+
+static NTSTATUS
+EvtchnBindVector(
+    IN  PXENBUS_EVTCHN_CONTEXT      Context,
+    IN  PXENBUS_EVTCHN_DESCRIPTOR   Descriptor
+    )
+{
+	NTSTATUS                        status;
+	status = EventChannelBindVector( DOMID_SELF,Descriptor->LocalPort , Context->Interrupt->Raw.u.Interrupt.Vector);
+	return status;
 }
 
 #define EVTCHN_OPERATION(_Type, _Name, _Arguments) \

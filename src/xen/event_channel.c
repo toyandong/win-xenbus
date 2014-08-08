@@ -111,7 +111,7 @@ __checkReturn
 XEN_API
 NTSTATUS
 EventChannelBindVector(
-    IN  domid_t                     RemoteDomain,
+    IN  domid_t                     Domain,
     IN  evtchn_port_t               Port,
 	IN  int               Vector
     )
@@ -120,7 +120,7 @@ EventChannelBindVector(
     LONG_PTR                        rc;
     NTSTATUS                        status;
 
-	op.domid = RemoteDomain;
+	op.domid = Domain;
 	op.port = Port;
 	op.vector = Vector;
 
