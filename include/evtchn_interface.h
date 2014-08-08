@@ -102,6 +102,13 @@ typedef struct _XENBUS_EVTCHN_DESCRIPTOR    XENBUS_EVTCHN_DESCRIPTOR, *PXENBUS_E
                          IN PXENBUS_EVTCHN_CONTEXT    Context,                      \
                          IN PXENBUS_EVTCHN_DESCRIPTOR Descriptor                    \
                          )                                                          \
+                         )															\
+        EVTCHN_OPERATION(ULONG,                                                     \
+                         BindVector,                                                      \
+                         (                                                          \
+                         IN PXENBUS_EVTCHN_CONTEXT    Context,                      \
+                         IN PXENBUS_EVTCHN_DESCRIPTOR Descriptor                    \
+                         )                                                          \
                          )
 
 typedef struct _XENBUS_EVTCHN_CONTEXT   XENBUS_EVTCHN_CONTEXT, *PXENBUS_EVTCHN_CONTEXT;

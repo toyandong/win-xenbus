@@ -307,7 +307,7 @@ EvtchnOpen(
         break;
 
     case EVTCHN_INTER_DOMAIN:
-        status = __EvtchnOpenInterDomain(Context, Descriptor, Arguments);
+        status = __EvtchnOpenInterDomain(Descriptor, Arguments);
         break;
 
     case EVTCHN_VIRQ:
