@@ -198,7 +198,6 @@ fail1:
 
 static FORCEINLINE NTSTATUS
 __EvtchnOpenInterDomain(
-	IN  PXENBUS_EVTCHN_CONTEXT		Context,
     IN  PXENBUS_EVTCHN_DESCRIPTOR   Descriptor,
     IN  va_list                     Arguments
     )
