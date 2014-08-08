@@ -476,6 +476,18 @@ __EvtchnCallback(
 }
 
 static BOOLEAN
+EvtchnBindVector(
+    IN  PXENBUS_EVTCHN_CONTEXT      Context,
+    IN  PXENBUS_EVTCHN_DESCRIPTOR   Descriptor
+    )
+{
+    BOOLEAN                         DoneSomething;
+
+
+    return DoneSomething;
+}
+
+static BOOLEAN
 EvtchnTrigger(
     IN  PXENBUS_EVTCHN_CONTEXT      Context,
     IN  PXENBUS_EVTCHN_DESCRIPTOR   Descriptor
