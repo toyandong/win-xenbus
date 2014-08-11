@@ -5,3 +5,29 @@
 
 # Output
 /xenbus
+*.tlog
+*.obj
+*.xml
+*.pdb
+*.suo
+*.lastbuildstate
+*.res
+*.sln
+*.exp
+*.lib
+*.cer
+*.sys
+include/version.h
+*.lastcodeanalysissucceeded
+*.dll
+xenbus.zip
+*.opensdf
+*.sdf
+xenbus_bindvector.patch
+*.sln
+*.sln
+proj/xenbus.sln
+proj/xenbus.sln
+include/version.h
+include/version.h
+.build_number

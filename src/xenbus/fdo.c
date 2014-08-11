@@ -1500,7 +1500,7 @@ FdoFilterResourceRequirements(
 
     Size = Old->ListSize + sizeof (IO_RESOURCE_DESCRIPTOR);
 
-    New = __AllocatePoolWithTag(PagedPool, Size, 'SUB');
+    New = ExAllocatePoolWithTag(PagedPool, Size, 'SUB');
 
     status = STATUS_NO_MEMORY;
     if (New == NULL)

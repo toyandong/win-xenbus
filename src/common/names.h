@@ -292,6 +292,7 @@ IrqPriorityName(
     return "UNKNOWN";
 
 #undef  _IRQ_PRIORITY_NAME
+}
 static FORCEINLINE const CHAR *
 DeviceUsageTypeName(
     IN  DEVICE_USAGE_NOTIFICATION_TYPE  Type
