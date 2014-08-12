@@ -585,11 +585,13 @@ EvtchnRelease(
 static NTSTATUS
 EvtchnBindVector(
     IN  PXENBUS_EVTCHN_CONTEXT      Context,
-    IN  PXENBUS_EVTCHN_DESCRIPTOR   Descriptor
+    IN  PXENBUS_EVTCHN_DESCRIPTOR   Descriptor,
+	IN  ULONG   Vector
     )
 {
 	NTSTATUS                        status;
-	status = EventChannelBindVector( DOMID_SELF,Descriptor->LocalPort , Context->Interrupt->Raw.u.Interrupt.Vector);
+	UNREFERENCED_PARAMETER(Context);
+	status = EventChannelBindVector( DOMID_SELF, Descriptor->LocalPort ,Vector);
 	return status;
 }
 

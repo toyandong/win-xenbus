@@ -1537,6 +1537,11 @@ FdoFilterResourceRequirements(
     status = Irp->IoStatus.Status;
     IoCompleteRequest(Irp, IO_NO_INCREMENT);
 
+	/*bind new MSI vector to local evtchn
+	EVTCHN(BindVector,
+        &Fdo->EvtchnInterface,
+        Fdo->Evtchn);
+		*/
     return status;
 
 fail2:
@@ -1654,7 +1659,14 @@ FdoParseResources(
             Fdo->Resource[INTERRUPT_RESOURCE].Translated = *TranslatedPartialDescriptor;
 			
 			if (TranslatedPartialDescriptor->Flags & CM_RESOURCE_INTERRUPT_MESSAGE)
+			{
+				/*here to bind vector and ecthn?*/
+				EVTCHN(BindVector,
+						&Fdo->EvtchnInterface,
+						Fdo->Evtchn,
+						Fdo->Resource[INTERRUPT_RESOURCE].Raw.u.Interrupt.Vector);
                break;
+			}
             break;
 
         default:

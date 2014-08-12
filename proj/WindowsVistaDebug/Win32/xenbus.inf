@@ -34,7 +34,7 @@ Class=System
 ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
 Provider=%Citrix% 
 CatalogFile=xenbus.cat
-DriverVer=08/11/2014,7.2.0.9
+DriverVer=08/12/2014,7.2.0.12
 
 [DestinationDirs] 
 DefaultDestDir=12 
@@ -55,7 +55,7 @@ xenbus.sys
 xenfilt.sys
 
 [CoInst_CopyFiles]
-xenbus_coinst_7_2_0_9.dll,xenbus_coinst.dll
+xenbus_coinst_7_2_0_12.dll,xenbus_coinst.dll
 
 [Manufacturer] 
 %Citrix%=Citrix,NTx86
@@ -119,7 +119,7 @@ CopyFiles=CoInst_CopyFiles
 AddReg=CoInst_AddReg
 
 [CoInst_AddReg]
-HKR,,CoInstallers32,0x00010000,"xenbus_coinst_7_2_0_9.dll,Entry"
+HKR,,CoInstallers32,0x00010000,"xenbus_coinst_7_2_0_12.dll,Entry"
 
 [Strings] 
 

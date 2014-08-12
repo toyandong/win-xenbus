@@ -103,11 +103,12 @@ typedef struct _XENBUS_EVTCHN_DESCRIPTOR    XENBUS_EVTCHN_DESCRIPTOR, *PXENBUS_E
                          IN PXENBUS_EVTCHN_DESCRIPTOR Descriptor                    \
                          )                                                          \
                          )															\
-        EVTCHN_OPERATION(NTSTATUS,                                                     \
-                         BindVector,                                                      \
+        EVTCHN_OPERATION(NTSTATUS,                                                  \
+                         BindVector,                                                \
                          (                                                          \
                          IN PXENBUS_EVTCHN_CONTEXT    Context,                      \
-                         IN PXENBUS_EVTCHN_DESCRIPTOR Descriptor                    \
+                         IN PXENBUS_EVTCHN_DESCRIPTOR Descriptor,                    \
+						 IN  ULONG   Vector											\
                          )                                                          \
                          )
 
