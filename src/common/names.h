@@ -293,6 +293,29 @@ IrqPriorityName(
 
 #undef  _IRQ_PRIORITY_NAME
 }
+
+static FORCEINLINE const CHAR *
+InterruptModeName(
+    IN  KINTERRUPT_MODE Mode
+    )
+{
+#define _INTERRUPT_MODE_NAME(_Mode) \
+    case _Mode:                     \
+        return #_Mode;
+
+    switch (Mode) {
+    _INTERRUPT_MODE_NAME(LevelSensitive);
+    _INTERRUPT_MODE_NAME(Latched);
+    default:
+        break;
+    }
+
+    return "UNKNOWN";
+
+#undef  _INTERRUPT_MODE_NAME
+
+}
+
 static FORCEINLINE const CHAR *
 DeviceUsageTypeName(
     IN  DEVICE_USAGE_NOTIFICATION_TYPE  Type

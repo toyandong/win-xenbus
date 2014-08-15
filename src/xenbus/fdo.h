@@ -45,6 +45,8 @@ typedef enum _XENBUS_RESOURCE_TYPE {
     RESOURCE_COUNT
 } XENBUS_RESOURCE_TYPE, *PXENBUS_RESOURCE_TYPE;
 
+typedef struct _XENBUS_INTERRUPT XENBUS_INTERRUPT, *PXENBUS_INTERRUPT;
+
 typedef struct _XENBUS_RESOURCE {
     CM_PARTIAL_RESOURCE_DESCRIPTOR Raw;
     CM_PARTIAL_RESOURCE_DESCRIPTOR Translated;
@@ -153,6 +155,52 @@ extern PXENFILT_UNPLUG_INTERFACE
 FdoGetUnplugInterface(
     IN  PXENBUS_FDO Fdo
     );
+
+ extern
+ _IRQL_requires_max_(HIGH_LEVEL)
+ _IRQL_saves_
+ _IRQL_raises_(HIGH_LEVEL)
+ KIRQL
+ FdoAcquireInterruptLock(
+    IN  PXENBUS_FDO         Fdo,
+    IN  PXENBUS_INTERRUPT   Interrupt
+	 );
+ VOID
+ FdoReleaseInterruptLock(
+     IN  PXENBUS_FDO                 Fdo,
+     IN  PXENBUS_INTERRUPT           Interrupt,
+     IN  __drv_restoresIRQL KIRQL    Irql
+     );
+ 
+extern NTSTATUS
+FdoAllocateInterrupt(
+    IN  PXENBUS_FDO         Fdo,
+    IN  KINTERRUPT_MODE     InterruptMode,
+    IN  KSERVICE_ROUTINE    Callback,
+    IN  PVOID               Argument OPTIONAL,
+    OUT PXENBUS_INTERRUPT   *Interrupt
+    );
+
+extern VOID
+FdoGetInterruptVector(
+    IN  PXENBUS_FDO         Fdo,
+    IN  PXENBUS_INTERRUPT   Interrupt,
+    OUT PULONG              Vector,
+    OUT PKAFFINITY          Affinity
+    );
+
+extern ULONG
+FdoGetInterruptLine(
+    IN  PXENBUS_FDO         Fdo,
+    IN  PXENBUS_INTERRUPT   Interrupt
+    );
+
+extern VOID
+FdoFreeInterrupt(
+    IN  PXENBUS_FDO         Fdo,
+    IN  PXENBUS_INTERRUPT   Interrupt
+    );
+
 
 #include "suspend.h"
 

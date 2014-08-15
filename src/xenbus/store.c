@@ -128,6 +128,7 @@ struct _XENBUS_STORE_CONTEXT {
     PXENBUS_EVTCHN_INTERFACE            EvtchnInterface;
     PFN_NUMBER                          Pfn;
     PXENBUS_EVTCHN_DESCRIPTOR           Evtchn;
+	PXENBUS_INTERRUPT                    Interrupt;
     PXENBUS_SUSPEND_INTERFACE           SuspendInterface;
     PXENBUS_DEBUG_INTERFACE             DebugInterface;
     PXENBUS_SUSPEND_CALLBACK            SuspendCallbackEarly;
@@ -1763,7 +1764,14 @@ StoreAcquire(
     IN  PXENBUS_STORE_CONTEXT   Context
     )
 {
+	NTSTATUS                status;
+	PXENBUS_FDO			Fdo = Context->Interrupt->Fdo;
     InterlockedIncrement(&Context->References);
+	status = FdoAllocateInterrupt(Fdo,
+                                  Latched,
+                                  StoreEvtchnCallback,
+                                  Context,
+                                  &Context->Interrupt);
 }
 
 static VOID
@@ -1771,6 +1779,11 @@ StoreRelease(
     IN  PXENBUS_STORE_CONTEXT   Context
     )
 {
+	NTSTATUS                status;
+	PXENBUS_FDO			Fdo = Context->Interrupt->Fdo;
+	FdoFreeInterrupt(Fdo, Context->Interrupt);
+    Context->Interrupt = NULL;
+
     ASSERT(Context->References != 0);
     InterlockedDecrement(&Context->References);
 }
@@ -1797,6 +1810,10 @@ StoreEvtchnCallback(
     UNREFERENCED_PARAMETER(InterruptObject);
 
     ASSERT(Context != NULL);
+	XENBUS_EVTCHN(Ack,
+                  &Context->EvtchnInterface,
+                  Context->Channel,
+                  TRUE);
 
     KeInsertQueueDpc(&Context->Dpc, NULL, NULL);
 
@@ -1822,6 +1839,8 @@ __StoreEnable(
     ULONG_PTR                   Port;
     BOOLEAN                     Pending;
     NTSTATUS                    status;
+	ULONG						Vector;
+	KAFFINITY					Affinity;
 
     status = HvmGetParam(HVM_PARAM_STORE_EVTCHN, &Port);
     ASSERT(NT_SUCCESS(status));
@@ -1834,6 +1853,18 @@ __StoreEnable(
                              Port,
                              FALSE);
     ASSERT(Context->Evtchn != NULL);
+
+    FdoGetInterruptVector(Context->Fdo,
+                          Context->Interrupt,
+                          &Vector,
+                          &Affinity);
+
+    status = EVTCHN(Bind,
+                           &Context->EvtchnInterface,
+                           Context->Channel,
+                           Vector);
+
+    Info("%s EVTCHN\n", NT_SUCCESS(status) ? "BOUND" : "MULTIPLEXED");
 
     Pending = EVTCHN(Unmask,
                      Context->EvtchnInterface,
